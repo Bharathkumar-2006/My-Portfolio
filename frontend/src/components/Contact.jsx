@@ -62,7 +62,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <span className="block text-xs text-gray-500 uppercase tracking-widest">Location</span>
-                                    <span className="text-lg text-white font-bold">Chennai, India</span>
+                                    <span className="text-lg text-white font-bold">Tiruppur, India</span>
                                 </div>
                             </div>
                         </CyberCard>
