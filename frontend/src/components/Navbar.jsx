@@ -1,108 +1,109 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Terminal } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
-
-const navItems = [
-    { name: 'Home', id: 'home' },
-    { name: 'About', id: 'about' },
-    { name: 'Skills', id: 'skills' },
-    { name: 'Certifications', id: 'certifications' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Contact', id: 'contact' },
-];
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
+            setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleNavClick = (item) => {
+    const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'About', path: '/#about' },
+        { name: 'Skills', path: '/#skills' },
+        { name: 'Work', path: '/#certifications' },
+        { name: 'Blog', path: '/blog' },
+        { name: 'Contact', path: '/#contact' },
+    ];
+
+    const handleNavClick = (path) => {
         setIsOpen(false);
-        if (item.path) {
-            navigate(item.path);
-        } else {
+        if (path.startsWith('/#')) {
+            const id = path.replace('/#', '');
             if (location.pathname !== '/') {
-                navigate('/');
-                setTimeout(() => {
-                    const element = document.getElementById(item.id);
-                    if (element) element.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
+                // If not on home, waiting for nav might be tricky without global state or context, 
+                // but simpler to use standard anchor navigation behavior for now.
             } else {
-                const element = document.getElementById(item.id);
+                const element = document.getElementById(id);
                 if (element) element.scrollIntoView({ behavior: 'smooth' });
             }
         }
     };
 
     return (
-        <nav
-            className={`fixed w-full z-50 transition-all duration-300 border-b border-transparent ${scrolled
-                    ? 'bg-background/70 backdrop-blur-xl border-white/10 py-4 supports-[backdrop-filter]:bg-background/60'
-                    : 'bg-transparent py-6'
-                }`}
+        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled
+                ? 'bg-background/80 backdrop-blur-md border-b border-white/5 py-4'
+                : 'bg-transparent py-6'
+            }`}
         >
             <div className="container mx-auto px-6 flex justify-between items-center">
-                <div
-                    className="flex items-center gap-2 font-bold text-2xl cursor-pointer group"
-                    onClick={() => handleNavClick({ id: 'home' })}
-                >
-                    <div className="p-2 bg-primary/10 rounded border border-primary/20 group-hover:border-primary/50 transition-colors">
-                        <Terminal className="text-primary h-6 w-6" />
+                {/* Logo */}
+                <Link to="/" className="text-2xl font-bold flex items-center gap-2 group">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white shadow-lg group-hover:shadow-[0_0_20px_rgba(112,0,255,0.4)] transition-all">
+                        <span className="font-mono text-lg">B</span>
                     </div>
-                    <span className="text-white font-mono">Mr.<span className="text-primary">BK</span></span>
-                </div>
+                    <span className="text-white hidden sm:block">Bharath<span className="text-gray-400 font-normal">.kumar</span></span>
+                </Link>
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-8">
-                    {navItems.map((item) => (
-                        <button
-                            key={item.name}
-                            onClick={() => handleNavClick(item)}
-                            className="text-gray-400 hover:text-primary transition-colors text-sm uppercase tracking-wider font-medium relative group"
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            to={link.path}
+                            onClick={() => handleNavClick(link.path)}
+                            className="text-sm font-medium text-gray-400 hover:text-white transition-colors relative group"
                         >
-                            {item.name}
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-                        </button>
+                            {link.name}
+                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
                     ))}
+                    <a
+                        href="/resume.pdf"
+                        target="_blank"
+                        className="px-5 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-sm font-medium text-white"
+                    >
+                        Resume
+                    </a>
                 </div>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Toggle */}
                 <button
-                    className="md:hidden text-white p-2"
+                    className="md:hidden text-white"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    {isOpen ? <X /> : <Menu />}
+                    {isOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </div>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="absolute top-full left-0 w-full bg-surface border-b border-white/10 md:hidden overflow-hidden backdrop-blur-xl"
+                        className="md:hidden bg-background/95 backdrop-blur-xl border-b border-white/10 overflow-hidden"
                     >
-                        <div className="flex flex-col py-4">
-                            {navItems.map((item) => (
-                                <button
-                                    key={item.name}
-                                    onClick={() => handleNavClick(item)}
-                                    className="py-4 px-6 text-left text-gray-300 hover:text-primary hover:bg-white/5 transition-colors font-mono"
+                        <div className="flex flex-col p-6 space-y-4">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.name}
+                                    to={link.path}
+                                    onClick={() => handleNavClick(link.path)}
+                                    className="text-lg font-medium text-gray-300 hover:text-white"
                                 >
-                                    <span className="text-secondary mr-2">&gt;</span>{item.name}
-                                </button>
+                                    {link.name}
+                                </Link>
                             ))}
                         </div>
                     </motion.div>

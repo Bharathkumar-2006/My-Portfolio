@@ -1,107 +1,110 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Shield, Globe, Lock, Terminal } from 'lucide-react';
-import MatrixBackground from './MatrixBackground';
-import GlitchText from './GlitchText';
+import { ArrowRight, User, MousePointer2 } from 'lucide-react';
 
 const Hero = () => {
     return (
-        <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden bg-background">
-            <MatrixBackground />
+        <div className="min-h-screen flex items-center justify-center relative px-6 overflow-hidden font-sans text-gray-100 bg-transparent">
 
-            {/* Decorative Gradients */}
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
+            {/* Soft Ambient Orbs */}
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-[100px] pointer-events-none animate-pulse" style={{ animationDelay: '2s' }}></div>
 
-            <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface/50 border border-primary/30 text-sm text-primary mb-6 backdrop-blur-sm">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                        </span>
-                        System Online
-                    </div>
+            <div className="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                        I am <br />
-                        <GlitchText text="Bharathkumar" className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-accent" />
-                    </h1>
+                {/* Left: Text Content */}
+                <div className="order-2 lg:order-1 text-center lg:text-left">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
+                    >
+                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        <span className="text-sm font-medium tracking-wide">Available for Projects</span>
+                    </motion.div>
 
-                    <p className="text-xl md:text-2xl text-gray-400 mb-4 font-mono">
-                        <span className="text-secondary">&gt;</span> Application Security & Cybersecurity Enthusiast
-                    </p>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400"
+                    >
+                        Bharathkumar
+                    </motion.h1>
 
-                    <p className="text-lg text-gray-500 mb-8 max-w-lg leading-relaxed">
-                        Breaking, securing, learning — repeat. Dedicated to making the digital world safer one vulnerability at a time.
-                    </p>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-2xl md:text-3xl font-medium text-primary mb-8 flex items-center justify-center lg:justify-start gap-3"
+                    >
+                        <span className="text-secondary">Security Researcher</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
+                        <span>Developer</span>
+                    </motion.h2>
 
-                    <div className="flex flex-wrap gap-4">
-                        <button
-                            onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-                            className="px-8 py-3 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-black rounded font-medium transition-all flex items-center gap-2 group"
-                        >
-                            Initialize Contact <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-lg text-gray-400 max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed"
+                    >
+                        Crafting secure digital experiences and hardened infrastructure. Bridging the gap between offensive security and elegant engineering.
+                    </motion.p>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="flex flex-wrap items-center justify-center lg:justify-start gap-4"
+                    >
+                        <button onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 rounded-full bg-primary text-black font-bold hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all flex items-center gap-2 group">
+                            Start Collaboration <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                         </button>
-                        <button
-                            onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
-                            className="px-8 py-3 border border-gray-800 hover:border-white text-gray-400 hover:text-white rounded font-medium transition-all"
-                        >
-                            View Data
+                        <button onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-sm transition-all font-medium">
+                            Explore Work
                         </button>
-                    </div>
-                </motion.div>
+                    </motion.div>
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative hidden lg:block"
-                >
-                    {/* Cyber Ring Visual */}
-                    <div className="relative w-[500px] h-[500px] mx-auto">
-                        <div className="absolute inset-0 rounded-full border border-gray-800 animate-spin-slow opacity-30"></div>
-                        <div className="absolute inset-4 rounded-full border border-dashed border-primary/30 animate-[spin_10s_linear_infinite_reverse]"></div>
+                {/* Right: Floating Avatar */}
+                <div className="order-1 lg:order-2 flex justify-center perspective-[1000px]">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8, rotateY: -15 }}
+                        animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                        className="relative"
+                    >
+                        {/* Spinning Ring */}
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            className="absolute -inset-10 border border-dashed border-primary/30 rounded-full"
+                        />
+                        <motion.div
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                            className="absolute -inset-4 border border-secondary/30 rounded-full"
+                        />
 
-                        {/* Floating Tech Icons */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-surface shadow-[0_0_50px_rgba(0,209,255,0.3)] z-20">
-                                <img
-                                    src="https://ui-avatars.com/api/?name=Bharath+Kumar&background=0a0a0a&color=00D1FF&size=256"
-                                    alt="Bharathkumar"
-                                    className="w-full h-full object-cover"
-                                />
+                        {/* Avatar Container */}
+                        <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-[0_0_50px_rgba(112,0,255,0.3)] bg-black/50 backdrop-blur-sm flex items-center justify-center group">
+                            {/* Placeholder */}
+                            <div className="text-center group-hover:scale-105 transition-transform duration-500">
+                                <div className="w-24 h-24 bg-gradient-to-tr from-primary to-secondary rounded-full mx-auto mb-4 flex items-center justify-center text-black">
+                                    <User size={40} />
+                                </div>
+                                <p className="text-sm font-medium text-gray-400">Add Photo</p>
                             </div>
 
-                            {/* Orbiting Elements */}
-                            <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                className="absolute w-full h-full"
-                            >
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6 bg-surface p-3 rounded-lg border border-gray-700 shadow-lg">
-                                    <Shield className="text-secondary w-6 h-6" />
-                                </div>
-                            </motion.div>
-
-                            <motion.div
-                                animate={{ rotate: -360 }}
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                                className="absolute w-[80%] h-[80%]"
-                            >
-                                <div className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-6 bg-surface p-3 rounded-lg border border-gray-700 shadow-lg">
-                                    <Terminal className="text-primary w-6 h-6" />
-                                </div>
-                            </motion.div>
+                            {/* Reflection */}
+                            <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
                         </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
+                </div>
+
             </div>
-        </section>
+        </div>
     );
 };
 

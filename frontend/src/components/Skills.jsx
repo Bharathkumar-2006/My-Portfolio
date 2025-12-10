@@ -1,63 +1,69 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import CyberCard from './CyberCard';
+import { Code, Terminal, Globe, Shield } from 'lucide-react';
 
-const skillCategories = [
+const skills = [
     {
-        title: 'Core Competencies',
-        skills: ['AppSec', 'Web Security', 'Network Security', 'Linux', 'Threat Analysis', 'Secure Coding']
+        category: "Offensive Security",
+        icon: <Shield size={24} />,
+        items: ["Penetration Testing", "Burp Suite", "Metasploit", "Nmap", "Wireshark"],
+        color: "text-red-500"
     },
     {
-        title: 'Tools & Utilities',
-        skills: ['Nmap', 'Burp Suite', 'Wireshark', 'Nikto', 'Gobuster', 'Metasploit', 'Nessus', 'Hydra', 'Dirsearch']
+        category: "Web Security",
+        icon: <Globe size={24} />,
+        items: ["OWASP Top 10", "XSS", "SQL Injection", "CSRF", "IDOR"],
+        color: "text-blue-400"
+    },
+    {
+        category: "Programming",
+        icon: <Code size={24} />,
+        items: ["Python", "JavaScript", "Go", "C/C++", "SQL"],
+        color: "text-green-400"
+    },
+    {
+        category: "Infrastructure",
+        icon: <Terminal size={24} />,
+        items: ["Docker", "Kubernetes", "AWS", "Linux", "Git"],
+        color: "text-purple-400"
     }
 ];
 
 const Skills = () => {
     return (
-        <section id="skills" className="py-32 bg-background relative overflow-hidden">
-            {/* Background Grid Pattern */}
-            <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
+        <section id="skills" className="py-20 relative font-mono">
+            <div className="container mx-auto px-6 max-w-6xl relative z-10">
+                <div className="mb-16 text-center">
+                    <h2 className="text-3xl font-bold text-white mb-2">
+                        <span className="text-primary mr-2">&gt;</span>
+                        capabilities
+                    </h2>
+                    <p className="text-gray-500 text-sm">/usr/bin/skills_check</p>
+                </div>
 
-            <div className="container mx-auto px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
-                >
-                    <span className="text-primary font-mono text-sm tracking-wider uppercase mb-2 block">/skills</span>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">Technical <span className="text-primary text-glow">Arsenal</span></h2>
-                </motion.div>
-
-                <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                    {skillCategories.map((category, idx) => (
-                        <motion.div
-                            key={category.title}
-                            initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.2 }}
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {skills.map((skill, index) => (
+                        <CyberCard
+                            key={index}
+                            className="h-full"
                         >
-                            <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                                <span className="h-1 w-8 bg-gradient-to-r from-primary to-transparent rounded-full"></span>
-                                {category.title}
-                            </h3>
+                            <div className="p-6 h-full flex flex-col">
+                                <div className="flex items-center gap-3 mb-4 border-b border-gray-800 pb-2">
+                                    <div className={`${skill.color}`}>{skill.icon}</div>
+                                    <h3 className="text-lg font-bold text-white uppercase tracking-wider">{skill.category}</h3>
+                                </div>
 
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                {category.skills.map((skill, i) => (
-                                    <motion.div
-                                        key={skill}
-                                        whileHover={{ scale: 1.05, borderColor: '#00D1FF' }}
-                                        className="bg-surface/50 backdrop-blur border border-gray-800 p-4 rounded-lg flex flex-col items-center justify-center text-center gap-2 group transition-colors hover:bg-white/5 hover:shadow-[0_0_15px_rgba(0,209,255,0.15)] cursor-default"
-                                    >
-                                        <div className="h-1 w-8 bg-gray-700 rounded-full overflow-hidden group-hover:w-full transition-all duration-500">
-                                            <div className="h-full bg-gradient-to-r from-primary to-secondary w-full"></div>
-                                        </div>
-                                        <span className="font-medium text-gray-300 group-hover:text-white transition-colors text-sm">{skill}</span>
-                                    </motion.div>
-                                ))}
+                                <ul className="space-y-2 mt-2">
+                                    {skill.items.map((item, i) => (
+                                        <li key={i} className="flex items-center gap-2 text-sm text-gray-400">
+                                            <span className="text-primary/50 text-xs">./</span>
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                        </motion.div>
+                        </CyberCard>
                     ))}
                 </div>
             </div>

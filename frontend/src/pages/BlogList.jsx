@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../lib/posts';
-import { Search, Tag, Calendar, Folder, ArrowRight, Shield, Globe } from 'lucide-react';
+import { Folder, Search, Database, ArrowRight } from 'lucide-react';
+import CyberCard from '../components/CyberCard';
 
 const BlogList = () => {
     const [posts, setPosts] = useState([]);
+    const [mainTab, setMainTab] = useState('ctf');
+    const [ctfSubTab, setCtfSubTab] = useState('thm');
     const [searchQuery, setSearchQuery] = useState('');
-    const [activeTab, setActiveTab] = useState('ctf'); // 'ctf' or 'realworld'
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         try {
@@ -16,176 +17,158 @@ const BlogList = () => {
             setPosts(loadedPosts);
         } catch (err) {
             console.error("Failed to load posts:", err);
-            setError("Failed to load blog posts. Please check console for details.");
         }
     }, []);
 
-    if (error) {
-        return (
-            <div className="min-h-screen bg-background pt-32 px-6 flex justify-center text-red-500">
-                {error}
-            </div>
-        )
-    }
-
-    // Filter logic
     const filteredPosts = posts.filter(post => {
         if (!post) return false;
+        const category = post.category?.toLowerCase() || '';
 
-        try {
-            // 1. Search Filter
-            const titleMatch = post.title?.toLowerCase().includes(searchQuery.toLowerCase());
-            const descMatch = post.description?.toLowerCase().includes(searchQuery.toLowerCase());
-            const tagMatch = post.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-
-            const matchesSearch = titleMatch || descMatch || tagMatch;
-
-            if (!matchesSearch) return false;
-
-            // 2. Section Filter (CTF vs Real World)
-            const category = post.category ? post.category.toLowerCase() : 'uncategorized';
-            // CTF: thm, htb, others, ctf
-            // RealWorld: realworld, web, network, appsec
-
-            const isRealWorld =
-                category.includes('realworld') ||
-                category.includes('web') ||
-                category.includes('network') ||
-                category.includes('appsec');
-
-            const isCTF =
-                category.includes('thm') ||
-                category.includes('htb') ||
-                category.includes('ctf') ||
-                category.includes('others') ||
-                !isRealWorld; // Default to CTF if not explicitly RealWorld? Or keep separate?
-            // Let's keep separate for now. Logic:
-
-            if (activeTab === 'ctf') {
-                // Include explicit CTF categories OR if it's uncategorized but valid
-                return category.includes('thm') || category.includes('htb') || category.includes('ctf') || category.includes('others') || category === 'uncategorized';
-            }
-
-            if (activeTab === 'realworld') {
-                return isRealWorld;
-            }
-
-            return true;
-        } catch (e) {
-            console.warn("Error filtering post:", post, e);
-            return false;
+        let passesTab = false;
+        if (mainTab === 'security') {
+            passesTab = category.includes('realworld') || category.includes('web') || category.includes('appsec') || category.includes('network');
+        } else if (mainTab === 'ctf') {
+            if (ctfSubTab === 'thm') passesTab = category.includes('thm') || category.includes('tryhackme');
+            else if (ctfSubTab === 'htb') passesTab = category.includes('htb') || category.includes('hackthebox');
+            else if (ctfSubTab === 'other') passesTab = !category.includes('thm') && !category.includes('tryhackme') && !category.includes('htb') && !category.includes('hackthebox') && (category.includes('ctf') || category.includes('pwn') || category.includes('re'));
+            else passesTab = true;
         }
+
+        const passesSearch = post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            post.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+        return passesTab && passesSearch;
     });
 
     return (
-        <div className="min-h-screen bg-background pt-32 pb-20 px-6 relative">
-            {/* Background Grid */}
-            <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
+        <div className="min-h-screen pt-32 pb-20 px-6 font-sans text-gray-200 bg-transparent">
+            <div className="max-w-7xl mx-auto">
 
-            <div className="container mx-auto max-w-6xl relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center mb-16"
-                >
-                    <span className="text-primary font-mono text-sm tracking-wider uppercase mb-2 block">/logs</span>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-6">Security <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Writeups</span></h1>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
-                        Documentation of exploits, CTF solutions, and security research.
-                    </p>
-                </motion.div>
+                {/* Header */}
+                <div className="mb-16 text-center">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-secondary mb-4"
+                    >
+                        Knowledge Base
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-gray-400 text-lg max-w-2xl mx-auto"
+                    >
+                        Documenting the journey through offensive security operations and research.
+                    </motion.p>
+                </div>
 
-                {/* Main Section Tabs */}
-                <div className="flex justify-center mb-12">
-                    <div className="bg-surface/50 backdrop-blur p-1 rounded-xl border border-white/10 flex">
+                {/* Glass Tabs Container */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 bg-white/5 backdrop-blur-xl p-2 rounded-2xl border border-white/10">
+
+                    {/* Main Tabs switch */}
+                    <div className="flex bg-black/40 rounded-xl p-1 w-full md:w-auto">
                         <button
-                            onClick={() => setActiveTab('ctf')}
-                            className={`px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${activeTab === 'ctf'
-                                    ? 'bg-primary/20 text-primary shadow-[0_0_15px_rgba(0,209,255,0.2)]'
-                                    : 'text-gray-400 hover:text-white'
+                            onClick={() => setMainTab('ctf')}
+                            className={`px-8 py-3 rounded-lg font-medium transition-all ${mainTab === 'ctf'
+                                ? 'bg-gradient-to-r from-primary/80 to-secondary/80 text-white shadow-lg'
+                                : 'text-gray-400 hover:text-white'
                                 }`}
                         >
-                            <Shield size={18} /> CTF Writeups
+                            CTF Writeups
                         </button>
                         <button
-                            onClick={() => setActiveTab('realworld')}
-                            className={`px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${activeTab === 'realworld'
-                                    ? 'bg-secondary/20 text-secondary shadow-[0_0_15px_rgba(0,255,148,0.2)]'
-                                    : 'text-gray-400 hover:text-white'
+                            onClick={() => setMainTab('security')}
+                            className={`px-8 py-3 rounded-lg font-medium transition-all ${mainTab === 'security'
+                                ? 'bg-gradient-to-r from-primary/80 to-secondary/80 text-white shadow-lg'
+                                : 'text-gray-400 hover:text-white'
                                 }`}
                         >
-                            <Globe size={18} /> Real-World
+                            Security Research
                         </button>
+                    </div>
+
+                    {/* Search */}
+                    <div className="relative w-full md:w-96">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                            placeholder="Search articles..."
+                        />
                     </div>
                 </div>
 
-                {/* Search */}
-                <div className="max-w-md mx-auto mb-16 relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                    <input
-                        type="text"
-                        placeholder={`Search ${activeTab === 'ctf' ? 'CTF' : 'Real-World'} writeups...`}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-black/40 border border-gray-800 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(0,209,255,0.1)] transition-all placeholder:text-gray-600"
-                    />
-                </div>
+                {/* CTF Sub Filter Pills */}
+                {mainTab === 'ctf' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex justify-center gap-3 mb-10"
+                    >
+                        {[
+                            { id: 'thm', label: 'TryHackMe' },
+                            { id: 'htb', label: 'HackTheBox' },
+                            { id: 'other', label: 'Other Challenges' }
+                        ].map((sub) => (
+                            <button
+                                key={sub.id}
+                                onClick={() => setCtfSubTab(sub.id)}
+                                className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${ctfSubTab === sub.id
+                                    ? 'bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(0,240,255,0.3)]'
+                                    : 'bg-white/5 border-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                                    }`}
+                            >
+                                {sub.label}
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
 
-                {/* Posts Grid */}
+                {/* Cards Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredPosts.map((post, idx) => (
-                        <motion.div
-                            key={post.slug}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="bg-surface/40 backdrop-blur rounded-xl border border-white/5 overflow-hidden hover:border-primary/30 transition-all group hover:shadow-[0_0_20px_rgba(0,0,0,0.5)] flex flex-col"
-                        >
-                            <div className="p-6 flex flex-col h-full">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className={`flex items-center gap-2 text-xs font-mono px-2 py-1 rounded border ${activeTab === 'ctf' ? 'text-primary bg-primary/10 border-primary/20' : 'text-secondary bg-secondary/10 border-secondary/20'}`}>
-                                        <Folder size={12} />
-                                        {post.category}
+                        <Link to={`/blog/${post.slug}`} key={idx} className="block h-full transform hover:-translate-y-1 transition-transform duration-300">
+                            <CyberCard className="h-full">
+                                <div className="flex flex-col h-full">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wide border border-primary/20">{post.category}</span>
+                                        <span className="text-sm text-gray-500">{post.date}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
-                                        <Calendar size={12} />
-                                        {post.date}
-                                    </div>
-                                </div>
 
-                                <h2 className="text-xl font-bold mb-3 text-gray-200 group-hover:text-primary transition-colors line-clamp-2">
-                                    <Link to={`/blog/${post.slug}`}>
+                                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors leading-snug">
                                         {post.title}
-                                    </Link>
-                                </h2>
+                                    </h3>
 
-                                <p className="text-gray-400 text-sm mb-6 flex-grow line-clamp-3 leading-relaxed">
-                                    {post.description}
-                                </p>
+                                    <p className="text-gray-400 text-sm mb-6 flex-grow line-clamp-3 leading-relaxed">
+                                        {post.description}
+                                    </p>
 
-                                <div className="flex items-center gap-2 mt-auto mb-6 flex-wrap">
-                                    {post.tags && post.tags.slice(0, 3).map(tag => (
-                                        <span key={tag} className="text-xs text-gray-400 bg-white/5 border border-white/10 px-2 py-1 rounded flex items-center gap-1 font-mono">
-                                            <Tag size={10} /> {tag}
+                                    <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
+                                        <div className="flex gap-2">
+                                            {post.tags && post.tags.slice(0, 2).map((tag, i) => (
+                                                <span key={i} className="text-xs text-gray-500 font-medium">#{tag}</span>
+                                            ))}
+                                        </div>
+                                        <span className="text-primary text-sm font-medium flex items-center gap-2 group-hover:gap-3 transition-all">
+                                            Read Article <ArrowRight size={16} />
                                         </span>
-                                    ))}
+                                    </div>
                                 </div>
-
-                                <Link
-                                    to={`/blog/${post.slug}`}
-                                    className={`mt-4 block text-center py-2 rounded-lg bg-white/5 border border-white/5 hover:text-black transition-all text-sm font-bold flex items-center justify-center gap-2 group-hover:translate-y-1 ${activeTab === 'ctf' ? 'hover:bg-primary hover:border-primary' : 'hover:bg-secondary hover:border-secondary'}`}
-                                >
-                                    Read Walkthrough <ArrowRight size={16} />
-                                </Link>
-                            </div>
-                        </motion.div>
+                            </CyberCard>
+                        </Link>
                     ))}
                 </div>
 
-                {/* Empty State */}
                 {filteredPosts.length === 0 && (
-                    <div className="text-center py-20 bg-surface/30 rounded-2xl border border-white/5">
-                        <p className="text-gray-500 text-lg font-mono">No writeups found in {activeTab === 'ctf' ? 'CTF' : 'Real-World'} section.</p>
+                    <div className="py-24 text-center">
+                        <div className="inline-flex p-6 rounded-full bg-white/5 mb-6 text-gray-500">
+                            <Database size={40} />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-2">No Entries Found</h3>
+                        <p className="text-gray-500">Try adjusting your search criteria.</p>
                     </div>
                 )}
             </div>

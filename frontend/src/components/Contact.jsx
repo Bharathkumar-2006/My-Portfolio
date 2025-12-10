@@ -1,124 +1,126 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Send, MapPin } from 'lucide-react';
+import CyberCard from './CyberCard';
+import { Mail, Phone, MapPin, Send, Terminal } from 'lucide-react';
 
 const Contact = () => {
-    const [formData, setFormData] = useState({
+    const [formState, setFormState] = useState({
         name: '',
         email: '',
         message: ''
     });
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        window.location.href = `mailto:bharathkumar50033@gmail.com?subject=Contact from ${formData.name}&body=${formData.message}`;
+        const mailtoLink = `mailto:bharathkumar50033@gmail.com?subject=Brief from ${formState.name}&body=${formState.message}%0D%0A%0D%0AFrom: ${formState.email}`;
+        window.location.href = mailtoLink;
     };
 
     return (
-        <section id="contact" className="py-32 bg-background relative overflow-hidden">
-            <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+        <section id="contact" className="py-20 relative font-mono">
+            <div className="container mx-auto px-6 max-w-5xl relative z-10">
+                <div className="mb-16 text-center">
+                    <h2 className="text-3xl font-bold text-white mb-2">
+                        <span className="text-primary mr-2">&gt;</span>
+                        initiate_uplink
+                    </h2>
+                    <p className="text-gray-500 text-sm">Establishing secure connection...</p>
+                </div>
 
-            <div className="container mx-auto px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-20"
-                >
-                    <span className="text-accent font-mono text-sm tracking-wider uppercase mb-2 block">/connect</span>
-                    <h2 className="text-3xl md:text-5xl font-bold mt-2">Initialize <span className="text-accent text-glow">Communication</span></h2>
-                </motion.div>
+                <div className="grid md:grid-cols-2 gap-8 items-stretch">
 
-                <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto items-start">
                     {/* Contact Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        <h3 className="text-2xl font-bold mb-8">Transmission Data</h3>
-                        <p className="text-gray-400 mb-12 leading-relaxed text-lg">
-                            I'm always open to discussing new projects, security audits, or opportunities to collaborate.
-                        </p>
-
-                        <div className="space-y-8">
-                            {[
-                                { icon: Phone, title: "Phone", value: "+91 99522 50033" },
-                                { icon: Mail, title: "Email", value: "bharathkumar50033@gmail.com" },
-                                { icon: MapPin, title: "Location", value: "Tamil Nadu, India" }
-                            ].map((item, idx) => (
-                                <div key={idx} className="flex items-start gap-6 group">
-                                    <div className="p-4 bg-surface rounded-xl border border-gray-800 text-primary group-hover:border-primary/50 group-hover:shadow-[0_0_15px_rgba(0,209,255,0.15)] transition-all">
-                                        <item.icon size={24} />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-gray-200 mb-1">{item.title}</h4>
-                                        <p className="text-gray-400 font-mono text-sm">{item.value}</p>
-                                    </div>
+                    <div className="space-y-6">
+                        <CyberCard className="p-0">
+                            <div className="p-6 flex items-center gap-4 hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div className="p-3 bg-gray-900 border border-gray-700 rounded text-primary group-hover:border-primary transition-colors">
+                                    <Phone size={20} />
                                 </div>
-                            ))}
-                        </div>
-                    </motion.div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase tracking-widest">Phone</span>
+                                    <span className="text-lg text-white font-bold">+91 99522 50033</span>
+                                </div>
+                            </div>
+                        </CyberCard>
+
+                        <CyberCard className="p-0">
+                            <div className="p-6 flex items-center gap-4 hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div className="p-3 bg-gray-900 border border-gray-700 rounded text-primary group-hover:border-primary transition-colors">
+                                    <Mail size={20} />
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase tracking-widest">Email</span>
+                                    <span className="text-lg text-white font-bold break-all">bharathkumar50033@gmail.com</span>
+                                </div>
+                            </div>
+                        </CyberCard>
+
+                        <CyberCard className="p-0">
+                            <div className="p-6 flex items-center gap-4 hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div className="p-3 bg-gray-900 border border-gray-700 rounded text-primary group-hover:border-primary transition-colors">
+                                    <MapPin size={20} />
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 uppercase tracking-widest">Location</span>
+                                    <span className="text-lg text-white font-bold">Chennai, India</span>
+                                </div>
+                            </div>
+                        </CyberCard>
+                    </div>
 
                     {/* Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="bg-surface/30 backdrop-blur-md p-8 md:p-10 rounded-2xl border border-white/5 relative"
-                    >
-                        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-20" />
-
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="group">
-                                <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within:text-primary transition-colors">Name</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-black/40 border border-gray-800 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(0,209,255,0.1)] transition-all"
-                                    placeholder="Enter your name"
-                                />
-                            </div>
-                            <div className="group">
-                                <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within:text-primary transition-colors">Email</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-black/40 border border-gray-800 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(0,209,255,0.1)] transition-all"
-                                    placeholder="Enter your email"
-                                />
-                            </div>
-                            <div className="group">
-                                <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within:text-primary transition-colors">Message</label>
-                                <textarea
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                    rows="4"
-                                    className="w-full bg-black/40 border border-gray-800 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-primary focus:shadow-[0_0_15px_rgba(0,209,255,0.1)] transition-all"
-                                    placeholder="Enter your message..."
-                                ></textarea>
+                    <CyberCard className="h-full">
+                        <div className="p-6 h-full flex flex-col">
+                            <div className="flex items-center gap-2 mb-6 text-primary border-b border-gray-800 pb-2">
+                                <Terminal size={18} />
+                                <span className="font-bold text-sm tracking-wider uppercase">Send Message</span>
                             </div>
 
-                            <button
-                                type="submit"
-                                className="w-full bg-primary/10 text-primary border border-primary/50 font-bold py-4 rounded-lg hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(0,209,255,0.4)] transition-all flex items-center justify-center gap-2 group"
-                            >
-                                Send Transmission <Send size={18} className="group-hover:translate-x-1 transition-transform" />
-                            </button>
-                        </form>
-                    </motion.div>
+                            <form onSubmit={handleSubmit} className="space-y-4 flex-grow">
+                                <div>
+                                    <label className="text-xs text-gray-500 uppercase tracking-wider mb-1 block">Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formState.name}
+                                        onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                                        className="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-mono text-sm"
+                                        placeholder="Enter name..."
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs text-gray-500 uppercase tracking-wider mb-1 block">Email</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={formState.email}
+                                        onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                                        className="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-mono text-sm"
+                                        placeholder="user@domain.com"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs text-gray-500 uppercase tracking-wider mb-1 block">Message</label>
+                                    <textarea
+                                        required
+                                        rows="4"
+                                        value={formState.message}
+                                        onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                                        className="w-full bg-black border border-gray-700 rounded p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none font-mono text-sm"
+                                        placeholder="Input message payload..."
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="w-full py-3 bg-primary/10 border border-primary text-primary hover:bg-primary hover:text-black transition-all font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-2 mt-4"
+                                >
+                                    Execute Send <Send size={16} />
+                                </button>
+                            </form>
+                        </div>
+                    </CyberCard>
+
                 </div>
             </div>
         </section>
