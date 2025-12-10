@@ -22,16 +22,35 @@ const BlogList = () => {
 
     const filteredPosts = posts.filter(post => {
         if (!post) return false;
-        const category = post.category?.toLowerCase() || '';
+        console.log("Checking post:", post.title, post.category, post.tags); // DEBUG LOG
+
+        // Combine category and tags into a single searchable string for allocation
+        const allocString = `${post.category} ${post.tags.join(' ')}`.toLowerCase();
 
         let passesTab = false;
         if (mainTab === 'security') {
-            passesTab = category.includes('realworld') || category.includes('web') || category.includes('appsec') || category.includes('network');
+            // Check for security-blogs, realworld, or generic security terms
+            passesTab = allocString.includes('security-blogs') ||
+                allocString.includes('security') ||
+                allocString.includes('realworld') ||
+                allocString.includes('web') ||
+                allocString.includes('appsec') ||
+                allocString.includes('network');
         } else if (mainTab === 'ctf') {
-            if (ctfSubTab === 'thm') passesTab = category.includes('thm') || category.includes('tryhackme');
-            else if (ctfSubTab === 'htb') passesTab = category.includes('htb') || category.includes('hackthebox');
-            else if (ctfSubTab === 'other') passesTab = !category.includes('thm') && !category.includes('tryhackme') && !category.includes('htb') && !category.includes('hackthebox') && (category.includes('ctf') || category.includes('pwn') || category.includes('re'));
-            else passesTab = true;
+            if (ctfSubTab === 'thm') {
+                passesTab = allocString.includes('thm') || allocString.includes('tryhackme');
+            } else if (ctfSubTab === 'htb') {
+                passesTab = allocString.includes('htb') || allocString.includes('hackthebox');
+            } else if (ctfSubTab === 'other') {
+                passesTab = allocString.includes('other') ||
+                    (!allocString.includes('thm') &&
+                        !allocString.includes('tryhackme') &&
+                        !allocString.includes('htb') &&
+                        !allocString.includes('hackthebox') &&
+                        (allocString.includes('ctf') || allocString.includes('pwn') || allocString.includes('re')));
+            } else {
+                passesTab = true;
+            }
         }
 
         const passesSearch = post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||

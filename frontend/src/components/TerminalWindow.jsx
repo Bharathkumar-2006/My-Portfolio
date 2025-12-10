@@ -24,7 +24,7 @@ const TerminalWindow = () => {
             } else if (cmd === 'help') {
                 newHistory.push({ type: 'info', content: 'Commands: help, about, skills, contact, clear' });
             } else if (cmd === 'about') {
-                newHistory.push({ type: 'success', content: 'Bharathkumar: Cyber Security Enthusiast & Developer.' });
+                newHistory.push({ type: 'success', content: 'Bharathkumar: Cyber Security Enthusiast.' });
             } else {
                 if (cmd) newHistory.push({ type: 'error', content: `Command not found: ${cmd}` });
             }

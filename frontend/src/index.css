@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+
+  html,
+  body {
+    cursor: none;
+    background-color: #050010;
+  }
+
   html {
     scroll-behavior: smooth;
   }

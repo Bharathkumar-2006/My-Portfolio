@@ -40,7 +40,6 @@ const Hero = () => {
                     >
                         <span className="text-secondary">Security Researcher</span>
                         <span className="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
-                        <span>Developer</span>
                     </motion.h2>
 
                     <motion.p

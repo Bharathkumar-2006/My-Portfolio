@@ -8,10 +8,12 @@ import BlogPost from './pages/BlogPost';
 import Footer from './components/Footer';
 import CursorInteractiveBackground from './components/CursorInteractiveBackground';
 import FloatingSocials from './components/FloatingSocials';
+import CustomCursor from './components/CustomCursor';
 
 const Layout = ({ children }) => {
   return (
-    <div className="relative min-h-screen text-gray-200 font-sans">
+    <div className="relative min-h-screen text-gray-200 font-sans cursor-none">
+      <CustomCursor />
       <CursorInteractiveBackground />
       <Navbar />
       <FloatingSocials />
