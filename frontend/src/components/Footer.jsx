@@ -11,9 +11,9 @@ const Footer = () => {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <a href="#" className="p-2 bg-surface rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all hover:scale-110"><Github size={20} /></a>
-                    <a href="#" className="p-2 bg-surface rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all hover:scale-110"><Linkedin size={20} /></a>
-                    <a href="#" className="p-2 bg-surface rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all hover:scale-110"><Twitter size={20} /></a>
+                    <a href="https://github.com/Bharathkumar-2006" target="_blank" rel="noopener noreferrer" className="p-2 bg-surface rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all hover:scale-110"><Github size={20} /></a>
+                    <a href="https://linkedin.com/in/bharathkumar006" target="_blank" rel="noopener noreferrer" className="p-2 bg-surface rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all hover:scale-110"><Linkedin size={20} /></a>
+                    <a href="https://x.com/realXpL0itX" target="_blank" rel="noopener noreferrer" className="p-2 bg-surface rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-all hover:scale-110"><Twitter size={20} /></a>
                 </div>
             </div>
         </footer>

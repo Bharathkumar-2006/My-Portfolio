@@ -58,12 +58,12 @@ const Hero = () => {
                         transition={{ delay: 0.4 }}
                         className="flex flex-wrap items-center justify-center lg:justify-start gap-4"
                     >
-                        <button onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 rounded-full bg-primary text-black font-bold hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all flex items-center gap-2 group">
+                        <a href="#contact" className="px-8 py-4 rounded-full bg-primary text-black font-bold hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all flex items-center gap-2 group">
                             Start Collaboration <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                        </button>
-                        <button onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-sm transition-all font-medium">
-                            Explore Work
-                        </button>
+                        </a>
+                        <a href="https://drive.google.com/drive/folders/1sujtGjnE25-p9duGoIbHy3oWlkvG0hfe?usp=sharing" target="_blank" rel="noopener noreferrer" className="px-8 py-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-sm transition-all font-medium flex items-center gap-2">
+                            Access Resume <MousePointer2 size={18} />
+                        </a>
                     </motion.div>
                 </div>
 
@@ -89,16 +89,15 @@ const Hero = () => {
 
                         {/* Avatar Container */}
                         <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-[0_0_50px_rgba(112,0,255,0.3)] bg-black/50 backdrop-blur-sm flex items-center justify-center group">
-                            {/* Placeholder */}
-                            <div className="text-center group-hover:scale-105 transition-transform duration-500">
-                                <div className="w-24 h-24 bg-gradient-to-tr from-primary to-secondary rounded-full mx-auto mb-4 flex items-center justify-center text-black">
-                                    <User size={40} />
-                                </div>
-                                <p className="text-sm font-medium text-gray-400">Add Photo</p>
-                            </div>
+                            {/* Photo */}
+                            <img
+                                src="/profile.jpg"
+                                alt="Bharathkumar"
+                                className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700 hover:grayscale-0 grayscale-[20%]"
+                            />
 
-                            {/* Reflection */}
-                            <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
+                            {/* Reflection Overlay */}
+                            <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none mix-blend-overlay"></div>
                         </div>
                     </motion.div>
                 </div>

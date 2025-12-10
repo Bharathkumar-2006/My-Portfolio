@@ -5,8 +5,8 @@ import { Github, Linkedin, Twitter } from 'lucide-react';
 const FloatingSocials = () => {
     const socials = [
         { icon: <Github size={20} />, href: "https://github.com/Bharathkumar-2006", label: "GitHub" },
-        { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/bharathkumar-2006", label: "LinkedIn" },
-        { icon: <Twitter size={20} />, href: "https://twitter.com", label: "Twitter" }
+        { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/bharathkumar006", label: "LinkedIn" },
+        { icon: <Twitter size={20} />, href: "https://x.com/realXpL0itX", label: "Twitter" }
     ];
 
     return (

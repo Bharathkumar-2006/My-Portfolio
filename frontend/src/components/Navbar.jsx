@@ -41,8 +41,8 @@ const Navbar = () => {
 
     return (
         <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-background/80 backdrop-blur-md border-b border-white/5 py-4'
-                : 'bg-transparent py-6'
+            ? 'bg-background/80 backdrop-blur-md border-b border-white/5 py-4'
+            : 'bg-transparent py-6'
             }`}
         >
             <div className="container mx-auto px-6 flex justify-between items-center">
@@ -68,8 +68,9 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <a
-                        href="/resume.pdf"
+                        href="https://drive.google.com/drive/folders/1sujtGjnE25-p9duGoIbHy3oWlkvG0hfe?usp=sharing"
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="px-5 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-sm font-medium text-white"
                     >
                         Resume
